@@ -1,0 +1,13 @@
+---
+ - hosts: localhost
+   vars_files:
+    - ec2-keys.yml
+   tasks:
+    - name: launch ec2 instance
+      ec2:
+         aws_access_key: "{{ AWSAccessKeyId }}"
+         aws_secret_key: "{{ AWSSecretKey }}"
+         region: ap-south-1
+         instance_ids: [ 'i-049353ccd0df49a22' ]
+         state: absent    #terminate
+
