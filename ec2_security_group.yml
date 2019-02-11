@@ -1,0 +1,45 @@
+---
+ - hosts: localhost
+   vars_files:
+    - ec2-keys.yml
+   tasks:
+    - name: create ec2 security group    
+      ec2_group:
+       name: example
+       description: an example EC2 group
+       region: ap-south-1
+       aws_access_key: "{{ AWSAccessKeyId }}"
+       aws_secret_key: "{{ AWSSecretKey }}"
+       rules:
+         # Allowing http port
+         - proto: tcp
+           from_port: 80
+           to_port: 80
+           cidr_ip: 0.0.0.0/0
+         # Allowing ssh port
+         - proto: tcp
+           from_port: 22
+           to_port: 22
+           cidr_ip: 10.0.0.0/8
+         # Allowing https port
+         - proto: tcp
+           from_port: 443
+           to_port: 443
+           cidr_ip: 10.0.0.0/8
+
+
+    - name: launch ec2 instance
+      ec2:
+         aws_access_key: "{{ AWSAccessKeyId }}"
+         aws_secret_key: "{{ AWSSecretKey }}"
+         key_name: first_ec2_ansible
+         instance_type: t2.micro
+         image: ami-5b673c34 
+         wait: yes
+         group: example
+         count: 1
+         assign_public_ip: yes
+         region: ap-south-1
+         vpc_subnet_id: subnet-c4105bac
+
+
