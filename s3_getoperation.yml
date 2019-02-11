@@ -1,0 +1,15 @@
+---
+ - hosts: localhost
+   vars_files:
+    - ec2-keys.yml
+   tasks:
+    - name: create a s3 bucket
+      aws_s3:
+         aws_access_key: "{{ AWSAccessKeyId }}"
+         aws_secret_key: "{{ AWSSecretKey }}"
+         bucket: mybucket12345dftgsdtsff
+         object: ec2
+         dest: duplicateec2.yml
+         mode: get
+         region: ap-south-1
+       
